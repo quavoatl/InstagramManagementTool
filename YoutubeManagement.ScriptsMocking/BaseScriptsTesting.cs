@@ -1,6 +1,6 @@
+using InstaTool.MainScripts.InstagramPages;
 using NUnit.Framework;
 using System;
-using InstaTool.MainScripts.YoutubeUpload;
 
 namespace InstaTool.ScriptsMocking
 {

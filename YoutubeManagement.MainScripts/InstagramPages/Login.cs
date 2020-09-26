@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace InstaTool.MainScripts.YoutubeUpload
+namespace InstaTool.MainScripts.InstagramPages
 {
     public class Login : BaseInit
     {
