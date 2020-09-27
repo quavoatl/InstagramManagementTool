@@ -13,9 +13,22 @@ namespace InstaTool.DataAccess.DatabaseConn
 {
     public class SQLiteDatabaseAccess
     {
+        private static User _loggedUser = null;
+
+        public static bool AddInstagramAccount(InstagramAccount instagramAccount)
+        {
+            int res = 0;
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                res = cnn.Execute("insert into InstagramAccount(EmailPhone, Password, FollowedPersonLinkString, LikedPersonLinkString, UserId) " +
+                    "values (@EmailPhone, @Password, @FollowedPersonLinkString, @LikedPersonLinkString, @UserId)", instagramAccount);
+            }
+            if (res == 1) return true;
+            else return false;
+        }
+
         public static List<User> LoadUsers()
         {
-
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 var peopleOutput = cnn.Query<User>("select * from User", new DynamicParameters());
@@ -23,12 +36,22 @@ namespace InstaTool.DataAccess.DatabaseConn
             }
         }
 
-        public static void SaveUser(User user)
+        public static void AddUser(User user)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("insert into User(Username, Password, FollowedPersonLinkString) values (@Username, @Password, @FollowedPersonLinkString)", user);
+                cnn.Execute("insert into User(Username, Password) values (@Username, @Password)", user);
             }
+        }
+
+        public static void LoadUser(User user)
+        {
+            _loggedUser = user;
+        }
+
+        public static User GetLoggedUser()
+        {
+            return _loggedUser;
         }
 
         public static User GetUser(string user, string password)
@@ -39,7 +62,26 @@ namespace InstaTool.DataAccess.DatabaseConn
             }
         }
 
-        public static void SaveFollowedPerson(FollowedPerson followedPerson)
+        public static InstagramAccount GetInstagramAccount(string EmailPhone)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                return cnn.Query<InstagramAccount>($"select * from InstagramAccount " +
+                                                   $"where EmailPhone = '{EmailPhone}'").FirstOrDefault();
+            }
+        }
+
+        public static ICollection<InstagramAccount> GetInstagramAccount(int userId)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                return cnn.Query<InstagramAccount>($"select A.EmailPhone from InstagramAccount as A " +
+                                                   $"inner join User as B on A.UserId = B.Id " +
+                                                   $"where A.UserId = '{userId}'").ToList();
+            }
+        }
+
+        public static void AddFollowedPerson(FollowedPerson followedPerson)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -47,15 +89,11 @@ namespace InstaTool.DataAccess.DatabaseConn
             }
         }
 
-        public static ICollection<FollowedPerson> GetFollowedPersonsOfUser(int userId)
+        public static ICollection<FollowedPerson> GetFollowedPersonsOfInstaAccount(string emailPhone)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var user = cnn.Query<User>($"select * from User where Id = '{userId}'").FirstOrDefault();
-
-
-                return cnn.Query<FollowedPerson>($"select A.Id, A.UserURL, A.FollowDate, A.FollowedPersonLinkString from FollowedPerson as A " +
-                                                 $"inner join User as B on A.FollowedPersonLinkString = B.FollowedPersonLinkString").ToList();
+                return cnn.Query<FollowedPerson>($"select * from FollowedPerson where EmailPhone = '{emailPhone}'").ToList();
             }
         }
 

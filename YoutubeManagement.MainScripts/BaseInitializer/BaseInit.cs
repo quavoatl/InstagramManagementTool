@@ -22,6 +22,8 @@ namespace InstaTool.MainScripts.BaseInitializer
             _instaDriver.Navigate().GoToUrl("https://www.instagram.com/");
             return _instaDriver;
         }
+
+
     }
 
 

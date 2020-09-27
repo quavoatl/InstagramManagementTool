@@ -37,7 +37,7 @@
             // 
             // Enter
             // 
-            this.Enter.Location = new System.Drawing.Point(277, 191);
+            this.Enter.Location = new System.Drawing.Point(232, 97);
             this.Enter.Name = "Enter";
             this.Enter.Size = new System.Drawing.Size(75, 23);
             this.Enter.TabIndex = 0;
@@ -47,7 +47,7 @@
             // 
             // usernameTextbox
             // 
-            this.usernameTextbox.Location = new System.Drawing.Point(141, 119);
+            this.usernameTextbox.Location = new System.Drawing.Point(96, 25);
             this.usernameTextbox.Name = "usernameTextbox";
             this.usernameTextbox.Size = new System.Drawing.Size(211, 23);
             this.usernameTextbox.TabIndex = 1;
@@ -55,8 +55,9 @@
             // 
             // passwordTextbox
             // 
-            this.passwordTextbox.Location = new System.Drawing.Point(141, 148);
+            this.passwordTextbox.Location = new System.Drawing.Point(96, 54);
             this.passwordTextbox.Name = "passwordTextbox";
+            this.passwordTextbox.PasswordChar = '*';
             this.passwordTextbox.Size = new System.Drawing.Size(211, 23);
             this.passwordTextbox.TabIndex = 2;
             this.passwordTextbox.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
@@ -65,7 +66,7 @@
             // 
             this.label1.AccessibleName = "Email";
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(62, 122);
+            this.label1.Location = new System.Drawing.Point(17, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 15);
             this.label1.TabIndex = 3;
@@ -75,7 +76,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(62, 151);
+            this.label2.Location = new System.Drawing.Point(17, 57);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 15);
             this.label2.TabIndex = 4;
@@ -86,13 +87,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(430, 338);
+            this.ClientSize = new System.Drawing.Size(331, 165);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.passwordTextbox);
             this.Controls.Add(this.usernameTextbox);
             this.Controls.Add(this.Enter);
             this.Name = "Login";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.ResumeLayout(false);
             this.PerformLayout();

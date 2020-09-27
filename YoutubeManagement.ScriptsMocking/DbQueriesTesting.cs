@@ -24,31 +24,31 @@ namespace InstaTool.ScriptsMocking
             {
                 Username = "cacat",
                 Password = "pisat",
-                FollowedPersonLinkGUID = Guid.NewGuid()
             };
 
-            SQLiteDatabaseAccess.SaveUser(user);
+            SQLiteDatabaseAccess.AddUser(user);
         }
 
         [Test]
         public void AddFollowedPerson()
         {
             var user = SQLiteDatabaseAccess.GetUser("morti", "mati");
+            var instagramAccount = SQLiteDatabaseAccess.GetInstagramAccount("0765835785");
 
             FollowedPerson followedPerson = new FollowedPerson()
             {
-              FollowedPersonLinkString = user.FollowedPersonLinkString,
+              FollowedPersonLinkString = instagramAccount.FollowedPersonLinkString,
               FollowDate = DateTime.Now,
               UserURL = "https://www.instagram.com/cacat.la_punga/"
             };
 
-            SQLiteDatabaseAccess.SaveFollowedPerson(followedPerson);
+            SQLiteDatabaseAccess.AddFollowedPerson(followedPerson);
         }
 
         [Test]
         public void GetListOfFollowedPersons()
         {
-            var list = SQLiteDatabaseAccess.GetFollowedPersonsOfUser(3);
+            var list = SQLiteDatabaseAccess.GetFollowedPersonsOfInstaAccount("0765835785");
 
         }
     }

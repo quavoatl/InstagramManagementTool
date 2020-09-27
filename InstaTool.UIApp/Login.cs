@@ -33,6 +33,20 @@ namespace InstaTool.UIApp
         private void LoginButton_Click(object sender, EventArgs e)
         {
             var user = SQLiteDatabaseAccess.GetUser(usernameTextbox.Text, passwordTextbox.Text);
+
+            if (user != null)
+            {
+                SQLiteDatabaseAccess.LoadUser(user);
+
+                Homepage homepage = new Homepage();
+                homepage.Show();
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("Failed to login", "Failed", MessageBoxButtons.OK,
+              MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

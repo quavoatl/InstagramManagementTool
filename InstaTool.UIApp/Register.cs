@@ -29,10 +29,9 @@ namespace InstaTool.UIApp
             {
                 Username = usernameTextbox.Text,
                 Password = passwordTextbox.Text,
-                FollowedPersonLinkString = Guid.NewGuid().ToString()
             };
 
-            SQLiteDatabaseAccess.SaveUser(user);
+            SQLiteDatabaseAccess.AddUser(user);
 
             MessageBox.Show("Register Success", "Success", MessageBoxButtons.OK,
                 MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);

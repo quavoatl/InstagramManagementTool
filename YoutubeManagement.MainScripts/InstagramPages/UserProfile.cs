@@ -6,13 +6,17 @@ using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using System.Diagnostics;
+using OpenQA.Selenium.Interactions;
 
 namespace InstaTool.MainScripts.InstagramPages
 {
     public class UserProfile : BaseInit
     {
         private string _userProfileURL = string.Empty;
-        public UserProfile(FirefoxDriver driver,string userProfile)
+
+        public UserProfile(FirefoxDriver driver, string userProfile)
         {
             _userProfileURL = userProfile;
             InstaDriver = driver;
@@ -29,13 +33,54 @@ namespace InstaTool.MainScripts.InstagramPages
                 followSucces = DriverExtensions.FindElement(InstaDriver, By.XPath("//*[contains(@type,'button') and text() = 'Message']"), 20);
                 LogHelper.Log($"Succesfully followed {_userProfileURL}");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogHelper.Log($"Failed to follow {_userProfileURL} ---- {ex.GetType()}");
             }
 
             if (followButton != null) return true;
             else return false;
+        }
+
+        public void ScrapeUsers(int usersToScrape)
+        {
+            IWebElement followersElement = InstaDriver.FindElementByXPath("//a[contains(@href,'followers')]");
+            followersElement.Click();
+            IWebElement mainList = InstaDriver.FindElementByXPath("//*[contains(@class,'isgrP')]");
+
+            ScrollDown(30);
+
+            var listOfURLs = new List<string>();
+
+            foreach (var userElement in InstaDriver.FindElementsByXPath("//a[contains(@class,'_2dbep qNELH kIKUG')]"))
+            {
+                listOfURLs.Add(userElement.GetAttribute("href"));
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private void ScrollDown(int seconds)
+        {
+            Stopwatch s = new Stopwatch();
+            s.Start();
+            while (s.Elapsed < TimeSpan.FromSeconds(seconds))
+            {
+                var listOfaccs = InstaDriver.FindElementsByXPath("//a[contains(@class,'_2dbep qNELH kIKUG')]");
+                var lastElement = listOfaccs[listOfaccs.Count - 2];
+                InstaDriver.ExecuteScript("arguments[0].scrollIntoView(true);", lastElement);
+            }
+            s.Stop();
         }
     }
 }

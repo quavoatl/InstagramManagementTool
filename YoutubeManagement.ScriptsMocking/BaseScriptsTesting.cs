@@ -15,5 +15,16 @@ namespace InstaTool.ScriptsMocking
             var result = userProfile.Follow();
             Assert.IsTrue(result);
         }
+
+        [Test]
+        public void testscrape()
+        {
+            var ig = new Login();
+            var homepage = ig.PerformLogin("0765835785", "qazwsxedc123!");
+            var userProfile = homepage.GoToUserProfile("babytiana.maria");
+            userProfile.ScrapeUsers(1);
+            
+        }
+
     }
 }

@@ -17,11 +17,11 @@ namespace InstaTool.MainScripts.InstagramPages
             InstaDriver = driver;
         }
 
-        public UserProfile GoToUserProfile(string stringToSearch = "", bool isFollowByURL = false)
+        public UserProfile GoToUserProfile(string stringToSearch = "", bool isGoByURL = false)
         {
             UserProfile userProfile = null;
 
-            if (isFollowByURL)
+            if (isGoByURL)
             {
 
             }
