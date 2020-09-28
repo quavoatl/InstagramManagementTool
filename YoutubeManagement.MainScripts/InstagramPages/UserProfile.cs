@@ -9,11 +9,14 @@ using System.Text;
 using System.Linq;
 using System.Diagnostics;
 using OpenQA.Selenium.Interactions;
+using InstaTool.MainScripts.Strategies;
+using InstaTool.DataAccess.DbModels;
 
 namespace InstaTool.MainScripts.InstagramPages
 {
     public class UserProfile : BaseInit
     {
+        private IScrapingMethod _scrapingStrategy = null;
         private string _userProfileURL = string.Empty;
 
         public UserProfile(FirefoxDriver driver, string userProfile)
@@ -42,7 +45,7 @@ namespace InstaTool.MainScripts.InstagramPages
             else return false;
         }
 
-        public void ScrapeUsers(int usersToScrape)
+        public ICollection<ScrapedUser> ScrapeUsersByStrategy(int usersToScrape, IScrapingMethod scrapingStrategy)
         {
             IWebElement followersElement = InstaDriver.FindElementByXPath("//a[contains(@href,'followers')]");
             followersElement.Click();
@@ -56,6 +59,8 @@ namespace InstaTool.MainScripts.InstagramPages
             {
                 listOfURLs.Add(userElement.GetAttribute("href"));
             }
+
+             return scrapingStrategy.Scrape(listOfURLs, InstaDriver).ToList();
         }
 
 
