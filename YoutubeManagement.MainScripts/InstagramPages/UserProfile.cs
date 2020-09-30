@@ -60,7 +60,21 @@ namespace InstaTool.MainScripts.InstagramPages
                 listOfURLs.Add(userElement.GetAttribute("href"));
             }
 
-             return scrapingStrategy.Scrape(listOfURLs, InstaDriver).ToList();
+            LogHelper.Log($"Started to scrape users of {_userProfileURL}");
+
+            var scrapeListResult = scrapingStrategy.Scrape(listOfURLs, InstaDriver).ToList();
+
+            if (scrapeListResult.Count != 0)
+            {
+                LogHelper.Log($"Scraped a number of {scrapeListResult.Count} users");
+                LogHelper.Log($"Scraped users are available to export in the dropdown below");
+            }
+            else
+            {
+                LogHelper.Log($"{scrapeListResult.Count} users scraped");
+            }
+
+            return scrapeListResult;
         }
 
 

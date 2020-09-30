@@ -1,4 +1,5 @@
 ﻿using InstaTool.DataAccess.DbModels;
+using InstaTool.UIApp.ScrapeUsersForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +13,7 @@ namespace InstaTool.UIApp
     public partial class InstaToolFeatures : Form
     {
         private InstagramAccount _accountInUse = null;
+
         public InstaToolFeatures(InstagramAccount igAccount)
         {
             InitializeComponent();
@@ -23,6 +25,13 @@ namespace InstaTool.UIApp
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void ScrapeUsers_Click(object sender, EventArgs e)
+        {
+            ScrapeUsersByMinFolMaxFol scrapeUsersByMinFolMaxFol = new ScrapeUsersByMinFolMaxFol(_accountInUse);
+            scrapeUsersByMinFolMaxFol.Show();
+            this.Hide();
         }
     }
 }

@@ -23,6 +23,16 @@ namespace InstaTool.MainScripts.InstagramPages
 
             if (isGoByURL)
             {
+                try
+                {
+                    InstaDriver.Navigate().GoToUrl(stringToSearch);
+                    userProfile = new UserProfile(InstaDriver, InstaDriver.Url);
+                    LogHelper.Log($"Succesfully navigated to user profile {stringToSearch}");
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Log($"Failed to navigate to user profile {stringToSearch}");
+                }
 
             }
             else
@@ -37,7 +47,7 @@ namespace InstaTool.MainScripts.InstagramPages
                         IWebElement firstResultFromList = DriverExtensions.FindElements(InstaDriver, By.XPath("//*[contains(@class,'yCE8d  ')]"), 20)[0];
                         firstResultFromList.Click();
 
-                        userProfile = new UserProfile(InstaDriver,InstaDriver.Url);
+                        userProfile = new UserProfile(InstaDriver, InstaDriver.Url);
                         LogHelper.Log($"Succesfully navigated to user profile {stringToSearch}");
                     }
                 }
