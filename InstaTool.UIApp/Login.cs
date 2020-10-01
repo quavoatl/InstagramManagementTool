@@ -58,5 +58,17 @@ namespace InstaTool.UIApp
         {
 
         }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BackToRegister_Button(object sender, EventArgs e)
+        {
+            Register backToRegister = new Register();
+            this.Hide();
+            backToRegister.Show();
+        }
     }
 }

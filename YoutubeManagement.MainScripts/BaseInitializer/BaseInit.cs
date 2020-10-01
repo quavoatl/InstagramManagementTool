@@ -15,7 +15,9 @@ namespace InstaTool.MainScripts.BaseInitializer
 
         public FirefoxDriver CreateAndOpenDriver()
         {
-            _instaDriver = new FirefoxDriver(_firefoxDriverPath);
+            var options = new FirefoxOptions();
+            options.AddArgument("-headless");
+            _instaDriver = new FirefoxDriver(_firefoxDriverPath, options);
             _instaDriver.Manage().Window.Maximize();
             _instaDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 

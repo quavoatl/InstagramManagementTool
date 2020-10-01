@@ -44,6 +44,8 @@
             this.listResultsOfScrapingListview = new System.Windows.Forms.ListView();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.exportButton = new System.Windows.Forms.Button();
+            this.backToFeatures = new System.Windows.Forms.Button();
+            this.statusLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,7 +58,7 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.instagramTargetUrl);
             this.panel1.Controls.Add(this.startScraper);
-            this.panel1.Location = new System.Drawing.Point(4, 12);
+            this.panel1.Location = new System.Drawing.Point(40, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(332, 107);
             this.panel1.TabIndex = 0;
@@ -113,7 +115,7 @@
             // 
             // startScraper
             // 
-            this.startScraper.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.startScraper.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.startScraper.Location = new System.Drawing.Point(247, 49);
             this.startScraper.Name = "startScraper";
             this.startScraper.Size = new System.Drawing.Size(75, 41);
@@ -129,7 +131,7 @@
             this.listOfLogsListview.HideSelection = false;
             this.listOfLogsListview.Location = new System.Drawing.Point(4, 145);
             this.listOfLogsListview.Name = "listOfLogsListview";
-            this.listOfLogsListview.Size = new System.Drawing.Size(332, 77);
+            this.listOfLogsListview.Size = new System.Drawing.Size(411, 77);
             this.listOfLogsListview.TabIndex = 1;
             this.listOfLogsListview.UseCompatibleStateImageBehavior = false;
             this.listOfLogsListview.View = System.Windows.Forms.View.Details;
@@ -138,7 +140,7 @@
             // Description
             // 
             this.Description.Text = "Logs";
-            this.Description.Width = 325;
+            this.Description.Width = 410;
             // 
             // label4
             // 
@@ -170,7 +172,7 @@
             this.listResultsOfScrapingListview.HideSelection = false;
             this.listResultsOfScrapingListview.Location = new System.Drawing.Point(4, 247);
             this.listResultsOfScrapingListview.Name = "listResultsOfScrapingListview";
-            this.listResultsOfScrapingListview.Size = new System.Drawing.Size(332, 109);
+            this.listResultsOfScrapingListview.Size = new System.Drawing.Size(411, 109);
             this.listResultsOfScrapingListview.TabIndex = 1;
             this.listResultsOfScrapingListview.UseCompatibleStateImageBehavior = false;
             this.listResultsOfScrapingListview.View = System.Windows.Forms.View.Details;
@@ -179,11 +181,11 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "ScrapedURL";
-            this.columnHeader2.Width = 325;
+            this.columnHeader2.Width = 410;
             // 
             // exportButton
             // 
-            this.exportButton.Location = new System.Drawing.Point(239, 362);
+            this.exportButton.Location = new System.Drawing.Point(328, 362);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(87, 23);
             this.exportButton.TabIndex = 4;
@@ -191,11 +193,36 @@
             this.exportButton.UseVisualStyleBackColor = true;
             this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 
+            // backToFeatures
+            // 
+            this.backToFeatures.Location = new System.Drawing.Point(4, 362);
+            this.backToFeatures.Name = "backToFeatures";
+            this.backToFeatures.Size = new System.Drawing.Size(50, 23);
+            this.backToFeatures.TabIndex = 5;
+            this.backToFeatures.Text = "Back";
+            this.backToFeatures.UseVisualStyleBackColor = true;
+            this.backToFeatures.Click += new System.EventHandler(this.backToInstaToolFeatures_Click);
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.BackColor = System.Drawing.SystemColors.Control;
+            this.statusLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.statusLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.statusLabel.Location = new System.Drawing.Point(52, 127);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(54, 15);
+            this.statusLabel.TabIndex = 6;
+            this.statusLabel.Text = "Stopped";
+            this.statusLabel.Click += new System.EventHandler(this.statusLabel_click);
+            // 
             // ScrapeUsersByMinFolMaxFol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(338, 389);
+            this.ClientSize = new System.Drawing.Size(417, 389);
+            this.Controls.Add(this.statusLabel);
+            this.Controls.Add(this.backToFeatures);
             this.Controls.Add(this.exportButton);
             this.Controls.Add(this.listResultsOfScrapingListview);
             this.Controls.Add(this.label5);
@@ -203,6 +230,7 @@
             this.Controls.Add(this.listOfLogsListview);
             this.Controls.Add(this.panel1);
             this.Name = "ScrapeUsersByMinFolMaxFol";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ScrapeUsers";
             this.Load += new System.EventHandler(this.ScrapeUsersByMinFolMaxFol_Load);
             this.panel1.ResumeLayout(false);
@@ -232,5 +260,7 @@
         private System.Windows.Forms.Button exportButton;
         private System.Windows.Forms.ListView listResultsOfScraping;
         private System.Windows.Forms.ListView listResultsOfScrapingListview;
+        private System.Windows.Forms.Button backToFeatures;
+        private System.Windows.Forms.Label statusLabel;
     }
 }

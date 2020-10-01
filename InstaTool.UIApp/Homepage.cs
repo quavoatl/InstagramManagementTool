@@ -36,13 +36,21 @@ namespace InstaTool.UIApp
 
         private void UseSelectedAccount_Click(object sender, EventArgs e)
         {
-            var selectedAccountEmailPhone = SQLiteDatabaseAccess.GetInstagramAccount(listOfInstagramAccounts.SelectedItems[0].Text);
-
-            if (selectedAccountEmailPhone != null)
+            if (listOfInstagramAccounts.SelectedItems.Count == 1)
             {
-                InstaToolFeatures itf = new InstaToolFeatures(selectedAccountEmailPhone);
-                itf.Show();
-                this.Hide();
+                var selectedAccountEmailPhone = SQLiteDatabaseAccess.GetInstagramAccount(listOfInstagramAccounts.SelectedItems[0].Text);
+
+                if (selectedAccountEmailPhone != null)
+                {
+                    InstaToolFeatures itf = new InstaToolFeatures(selectedAccountEmailPhone);
+                    itf.Show();
+                    this.Hide();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select an account from the list", "Warning", MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
             }
         }
 
@@ -110,6 +118,13 @@ namespace InstaTool.UIApp
         private void LoadAccsFromDB_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void backToLogin_Click(object sender, EventArgs e)
+        {
+            Login backToLogin = new Login();
+            this.Hide();
+            backToLogin.Show();
         }
     }
 }

@@ -39,6 +39,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.backToLogin = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -152,11 +153,22 @@
             this.label2.Text = "Add an instagram account";
             this.label2.Click += new System.EventHandler(this.label1_Click);
             // 
+            // backToLogin
+            // 
+            this.backToLogin.Location = new System.Drawing.Point(473, 254);
+            this.backToLogin.Name = "backToLogin";
+            this.backToLogin.Size = new System.Drawing.Size(75, 37);
+            this.backToLogin.TabIndex = 5;
+            this.backToLogin.Text = "Logout";
+            this.backToLogin.UseVisualStyleBackColor = true;
+            this.backToLogin.Click += new System.EventHandler(this.backToLogin_Click);
+            // 
             // Homepage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(566, 303);
+            this.Controls.Add(this.backToLogin);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label1);
@@ -186,5 +198,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button backToLogin;
     }
 }

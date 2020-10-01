@@ -33,5 +33,12 @@ namespace InstaTool.UIApp
             scrapeUsersByMinFolMaxFol.Show();
             this.Hide();
         }
+
+        private void backToHomepage_Click(object sender, EventArgs e)
+        {
+            Homepage backToHomepage = new Homepage();
+            this.Hide();
+            backToHomepage.Show();
+        }
     }
 }

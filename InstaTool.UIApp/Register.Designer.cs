@@ -40,7 +40,7 @@
             // button1
             // 
             this.button1.AccessibleName = "Register";
-            this.button1.Location = new System.Drawing.Point(195, 88);
+            this.button1.Location = new System.Drawing.Point(195, 70);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -84,7 +84,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(195, 161);
+            this.button3.Location = new System.Drawing.Point(41, 102);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 5;
@@ -95,7 +95,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(128, 134);
+            this.label3.Location = new System.Drawing.Point(12, 84);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(142, 15);
             this.label3.TabIndex = 6;
@@ -106,7 +106,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(290, 199);
+            this.ClientSize = new System.Drawing.Size(290, 140);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.usernameTextbox);

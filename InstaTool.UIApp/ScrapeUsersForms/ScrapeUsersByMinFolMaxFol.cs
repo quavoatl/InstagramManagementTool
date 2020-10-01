@@ -1,5 +1,6 @@
 ﻿using InstaTool.DataAccess.DbModels;
 using InstaTool.MainScripts.Strategies;
+using InstaTool.UIApp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace InstaTool.UIApp.ScrapeUsersForms
@@ -54,7 +56,7 @@ namespace InstaTool.UIApp.ScrapeUsersForms
             var df = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             var fi = df.GetFiles("*LogMessage_*");
             res = File.ReadAllText(fi.Last().FullName);
-            var listOfLogs = res.Split("\r\n",StringSplitOptions.RemoveEmptyEntries);
+            var listOfLogs = res.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var log in listOfLogs)
             {
@@ -63,21 +65,35 @@ namespace InstaTool.UIApp.ScrapeUsersForms
             }
         }
 
-        private void startScraper_Click(object sender, EventArgs e)
+        private async void startScraper_Click(object sender, EventArgs e)
+        {
+            await Task.Factory.StartNew(() => StartScrapeTask());
+            LoadLogsToListView();
+            LoadScrapingResultsInListView(_scrapedUsers);
+        }
+
+        //exted threadhelperclass to use other things for labels/buttons
+        private void StartScrapeTask()
         {
             if (UrlIsValid())
             {
                 if (FollowersFollowingValuesAreCorrect())
                 {
+                    ThreadHelperClass.SetText(this, statusLabel, "This text was set safely.");
+
+                    //backToFeatures.Enabled = false;
+                    //statusLabel.ForeColor = Color.Green;
+                    //statusLabel.Text = "Running...";
                     var ig = new InstaTool.MainScripts.InstagramPages.Login();
                     var homepage = ig.PerformLogin(_accountInUse.EmailPhone);
+                    //statusLabel.Text = "Logged in...";
                     var userProfile = homepage.GoToUserProfile(instagramTargetUrl.Text, true);
+                    //statusLabel.Text = "Started scraping...";
                     _scrapedUsers = userProfile.ScrapeUsersByStrategy(1, new ScrapeByNumberOfFollowers(int.Parse(minFollowersTextbox.Text),
                                                                                                     int.Parse(maxFollowingTextbox.Text)));
+                    //statusLabel.Text = "Scraping done !!!";
                     // (1) change this in future, let user decide no of scraped users desired
 
-                    LoadLogsToListView();
-                    LoadScrapingResultsInListView(_scrapedUsers);
                 }
             }
         }
@@ -131,14 +147,26 @@ namespace InstaTool.UIApp.ScrapeUsersForms
                 {
                     foreach (var user in _scrapedUsers)
                     {
-                        sw.WriteLine($"{ user.UserURL}, Description: {user.Description}, Private ? {user.IsPrivate}");
+                        sw.WriteLine("Format: URL***DESCRIPTION***ISPRIVATE");
+                        sw.WriteLine($"{ user.UserURL}***{user.Description}***{user.IsPrivate}");
                     }
                     sw.Flush();
                     sw.Close();
                 }
             }
+        }
 
+        private void backToInstaToolFeatures_Click(object sender, EventArgs e)
+        {
+            InstaToolFeatures itf = new InstaToolFeatures(_accountInUse);
+            this.Hide();
+            itf.Show();
+        }
+
+        private void statusLabel_click(object sender, EventArgs e)
+        {
 
         }
+
     }
 }
