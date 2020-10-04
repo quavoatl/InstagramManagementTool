@@ -16,9 +16,8 @@ namespace InstaTool.MainScripts.BaseInitializer
 
         public FirefoxDriver CreateAndOpenDriver()
         {
-            ThreadLocal<FirefoxDriver> drivers = new ThreadLocal<FirefoxDriver>();
             var options = new FirefoxOptions();
-            options.AddArgument("-headless");
+            //options.AddArgument("-headless");
             _instaDriver = new FirefoxDriver(_firefoxDriverPath, options);
             _instaDriver.Manage().Window.Maximize();
             _instaDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -27,7 +26,30 @@ namespace InstaTool.MainScripts.BaseInitializer
             return _instaDriver;
         }
 
+        public int GetNumberOfCores()
+        {
+            int coreCount = 0;
+            foreach (var item in new System.Management.ManagementObjectSearcher("Select * from Win32_Processor").Get())
+            {
+                coreCount += int.Parse(item["NumberOfCores"].ToString());
+            }
+            return coreCount;
+        }
 
+
+        public List<FirefoxDriver> CreateDrivers()
+        {
+            var options = new FirefoxOptions();
+            options.AddArgument("-headless");
+            List<FirefoxDriver> listOfDrivers = new List<FirefoxDriver>();
+
+            for (int i = 0; i < GetNumberOfCores()-1; i++)
+            {
+                listOfDrivers.Add(CreateAndOpenDriver());
+            }
+
+            return listOfDrivers;
+        }
     }
 
 

@@ -62,6 +62,9 @@ namespace InstaTool.MainScripts.InstagramPages
 
             LogHelper.Log($"Started to scrape users of {_userProfileURL}");
 
+            InstaDriver.Quit();
+            CreateDrivers();
+
             var scrapeListResult = scrapingStrategy.Scrape(listOfURLs, InstaDriver).ToList();
 
             if (scrapeListResult.Count != 0)

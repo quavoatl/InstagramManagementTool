@@ -57,7 +57,7 @@ namespace InstaTool.MainScripts.Strategies
                     nrOfFollowing = int.Parse(driver.FindElementsByXPath("//*[contains(@class,'g47SY ')]")[2].Text.Replace(",", ""));
                 }
 
-                if (nrOfFollowers >= minFollowersCount && nrOfFollowers <= maxFollowersCount && 
+                if (nrOfFollowers >= minFollowersCount && nrOfFollowers <= maxFollowersCount &&
                     nrOfFollowing >= minFollowingCount && nrOfFollowing <= maxFollowingCount)
                 {
                     bool isAccountPrivate = false;
@@ -96,14 +96,8 @@ namespace InstaTool.MainScripts.Strategies
         }
 
 
-        public int GetNumberOfCores()
-        {
-            int coreCount = 0;
-            foreach (var item in new System.Management.ManagementObjectSearcher("Select * from Win32_Processor").Get())
-            {
-                coreCount += int.Parse(item["NumberOfCores"].ToString());
-            }
-            return coreCount;
-        }
+        
+
+        
     }
 }
