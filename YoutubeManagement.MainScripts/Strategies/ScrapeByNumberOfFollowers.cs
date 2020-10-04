@@ -1,4 +1,5 @@
 ﻿using InstaTool.DataAccess.DbModels;
+using InstaTool.MainScripts.DriverHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using System;
@@ -11,19 +12,26 @@ namespace InstaTool.MainScripts.Strategies
     {
         private int minFollowersCount = 0;
         private int maxFollowersCount = 0;
+        private int minFollowingCount = 0;
+        private int maxFollowingCount = 0;
 
-        public ScrapeByNumberOfFollowers(int minFollowers, int maxFollowers)
+        public ScrapeByNumberOfFollowers(FollowSpecifications fFpecs)
         {
-            minFollowersCount = minFollowers;
-            maxFollowersCount = maxFollowers;
+            minFollowersCount = fFpecs.MinFollowers;
+            maxFollowersCount = fFpecs.MaxFollowers;
+            minFollowingCount = fFpecs.MinFollowing;
+            maxFollowingCount = fFpecs.MaxFollowing;
         }
 
         public ICollection<ScrapedUser> Scrape(List<string> userURLs, FirefoxDriver driver)
         {
             int nrOfFollowers = 0;
             int nrOfFollowing = 0;
-            
+
             var resultsOfThisScraping = new List<ScrapedUser>();
+
+
+
 
             foreach (var url in userURLs)
             {
@@ -36,7 +44,7 @@ namespace InstaTool.MainScripts.Strategies
                 catch (Exception ex)
                 {
                     //for private profiles where followers is not clickable
-                    nrOfFollowers = int.Parse(driver.FindElementsByXPath("//*[contains(@class,'g47SY ')]")[1].Text.Replace(",",""));
+                    nrOfFollowers = int.Parse(driver.FindElementsByXPath("//*[contains(@class,'g47SY ')]")[1].Text.Replace(",", ""));
                 }
 
                 try
@@ -49,7 +57,8 @@ namespace InstaTool.MainScripts.Strategies
                     nrOfFollowing = int.Parse(driver.FindElementsByXPath("//*[contains(@class,'g47SY ')]")[2].Text.Replace(",", ""));
                 }
 
-                if (nrOfFollowers >= minFollowersCount && nrOfFollowing <= maxFollowersCount)
+                if (nrOfFollowers >= minFollowersCount && nrOfFollowers <= maxFollowersCount && 
+                    nrOfFollowing >= minFollowingCount && nrOfFollowing <= maxFollowingCount)
                 {
                     bool isAccountPrivate = false;
                     IWebElement accountPrivateElement = null;
@@ -65,7 +74,7 @@ namespace InstaTool.MainScripts.Strategies
                     {
                         descOfUser = driver.FindElementByXPath("//*[contains(@class,'-vDIg')]/span").Text;
                     }
-                    catch(Exception ex) 
+                    catch (Exception ex)
                     {
                         // this user doesnt have a desc
                         descOfUser = "NO DESCRIPTION";
@@ -84,6 +93,17 @@ namespace InstaTool.MainScripts.Strategies
             }
 
             return resultsOfThisScraping;
+        }
+
+
+        public int GetNumberOfCores()
+        {
+            int coreCount = 0;
+            foreach (var item in new System.Management.ManagementObjectSearcher("Select * from Win32_Processor").Get())
+            {
+                coreCount += int.Parse(item["NumberOfCores"].ToString());
+            }
+            return coreCount;
         }
     }
 }

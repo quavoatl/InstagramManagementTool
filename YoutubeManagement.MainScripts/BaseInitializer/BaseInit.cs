@@ -3,6 +3,7 @@ using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace InstaTool.MainScripts.BaseInitializer
 {
@@ -15,6 +16,7 @@ namespace InstaTool.MainScripts.BaseInitializer
 
         public FirefoxDriver CreateAndOpenDriver()
         {
+            ThreadLocal<FirefoxDriver> drivers = new ThreadLocal<FirefoxDriver>();
             var options = new FirefoxOptions();
             options.AddArgument("-headless");
             _instaDriver = new FirefoxDriver(_firefoxDriverPath, options);
