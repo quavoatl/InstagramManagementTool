@@ -1,4 +1,5 @@
 ﻿using InstaTool.DataAccess.DatabaseConn;
+using InstaTool.DataAccess.DbModels;
 using InstaTool.MainScripts.BaseInitializer;
 using InstaTool.MainScripts.DriverHelpers;
 using InstaTool.MainScripts.InstagramPages;
@@ -17,6 +18,7 @@ namespace InstaTool.MainScripts.InstagramPages
     public class Login : BaseInit
     {
         private readonly FirefoxDriver driver = null;
+        public static string LoggedAccount = string.Empty;
 
         public Login()
         {
@@ -26,12 +28,22 @@ namespace InstaTool.MainScripts.InstagramPages
 
         public Home PerformLogin(string emailOrPhone)
         {
-            var instaAccount = SQLiteDatabaseAccess.GetInstagramAccount(emailOrPhone);
+            InstagramAccount instaAccount = null;
+            try
+            {
+                instaAccount = SQLiteDatabaseAccess.GetInstagramAccount(emailOrPhone);
+                LoggedAccount = emailOrPhone;
+            }
+            catch (Exception ex) { }
 
             if (instaAccount != null)
             {
                 try
                 {
+
+                    IWebElement cookiesAccept = DriverExtensions.FindElement(InstaDriver, By.XPath("//*[contains(@class,'aOOlW  bIiDR  ')]"), 20);
+                    cookiesAccept.Click();
+
                     IWebElement loginEmail = InstaDriver.FindElementByXPath("//*[contains(@aria-label,'Phone number, username, or email')]");
                     loginEmail.SendKeys(emailOrPhone);
 
@@ -43,13 +55,7 @@ namespace InstaTool.MainScripts.InstagramPages
 
                     if (CheckIsLoggedIn())
                     {
-                        IWebElement saveLoginInfo = DriverExtensions.FindElement(InstaDriver, By.XPath("//*[contains(@class,'sqdOP yWX7d    y3zKF     ')]"), 20);
-                        saveLoginInfo.Click();
-
-
-                        IWebElement turnOnNotifications = DriverExtensions.FindElement(InstaDriver, By.XPath("//*[contains(@class,'aOOlW   HoLwm ')]"), 20);
-                        turnOnNotifications.Click();
-
+                        PassLoginPopUps();
                         LogHelper.Log("Succesfully logged in");
 
                         return new Home(InstaDriver);
@@ -63,6 +69,19 @@ namespace InstaTool.MainScripts.InstagramPages
 
             return null;
         }
+
+        public void PassLoginPopUps()
+        {
+            try
+            {
+                IWebElement saveLoginInfo = DriverExtensions.FindElement(InstaDriver, By.XPath("//*[contains(@class,'sqdOP yWX7d    y3zKF     ')]"), 20);
+                saveLoginInfo.Click();
+                IWebElement turnOnNotifications = DriverExtensions.FindElement(InstaDriver, By.XPath("//*[contains(@class,'aOOlW   HoLwm ')]"), 20);
+                turnOnNotifications.Click();
+            }
+            catch (Exception ex) { }
+        }
+
 
         public bool CheckIsLoggedIn()
         {

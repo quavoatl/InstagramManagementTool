@@ -11,6 +11,9 @@ using System.Diagnostics;
 using OpenQA.Selenium.Interactions;
 using InstaTool.MainScripts.Strategies;
 using InstaTool.DataAccess.DbModels;
+using MoreLinq;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace InstaTool.MainScripts.InstagramPages
 {
@@ -45,7 +48,7 @@ namespace InstaTool.MainScripts.InstagramPages
             else return false;
         }
 
-        public ICollection<ScrapedUser> ScrapeUsersByStrategy(int usersToScrape, IScrapingMethod scrapingStrategy)
+        public ICollection<string> GetFollowersURLsFromUserProfile()
         {
             IWebElement followersElement = InstaDriver.FindElementByXPath("//a[contains(@href,'followers')]");
             followersElement.Click();
@@ -63,19 +66,65 @@ namespace InstaTool.MainScripts.InstagramPages
             LogHelper.Log($"Started to scrape users of {_userProfileURL}");
 
             InstaDriver.Quit();
-            CreateDrivers();
+            DriverExtensions.KillProcesses();
 
-            var scrapeListResult = scrapingStrategy.Scrape(listOfURLs, InstaDriver).ToList();
+            return listOfURLs;
+        }
 
-            if (scrapeListResult.Count != 0)
+        public ICollection<ScrapedUser> ScrapeUsersByStrategy(int usersToScrape, IScrapingMethod scrapingStrategy)
+        {    
+            var listOfUrls = GetFollowersURLsFromUserProfile().ToList();
+            var maxThreads = GetNumberOfCores() - 1;
+            var batchSize = Convert.ToInt16(Convert.ToDouble(listOfUrls.Count) / Convert.ToDouble(maxThreads));
+
+            var listWithListsOfUrls = new List<List<string>>();
+
+            foreach (var batch in listOfUrls.Batch(batchSize))
             {
-                LogHelper.Log($"Scraped a number of {scrapeListResult.Count} users");
-                LogHelper.Log($"Scraped users are available to export in the dropdown below");
+                listWithListsOfUrls.Add(batch.ToList());
             }
-            else
+
+            var listOfTasks = new List<Task<ICollection<ScrapedUser>>>();
+            foreach (var list in listWithListsOfUrls)
             {
-                LogHelper.Log($"{scrapeListResult.Count} users scraped");
+
+                var task = Task<ICollection<ScrapedUser>>.Factory.StartNew(() => GetResultsFromScraping(scrapingStrategy, list));
+                listOfTasks.Add(task);
             }
+
+            Task.WaitAll(listOfTasks.ToArray());
+            List<ScrapedUser> results = new List<ScrapedUser>();
+
+            foreach (var task in listOfTasks)
+            {
+                results.AddRange(task.Result);
+            }
+            DriverExtensions.KillProcesses();
+
+            return results;
+        }
+
+        private ICollection<ScrapedUser> GetResultsFromScraping(IScrapingMethod scrapingStrategy, List<string> listOfURLs)
+        {
+            List<ScrapedUser> scrapeListResult = null;
+            try
+            {
+                var driver = new InstaTool.MainScripts.InstagramPages.Login();
+                driver.PerformLogin(Login.LoggedAccount);
+
+                scrapeListResult = scrapingStrategy.Scrape(listOfURLs, driver.InstaDriver).ToList();
+
+                if (scrapeListResult.Count != 0)
+                {
+                    LogHelper.Log($"Scraped a number of {scrapeListResult.Count} users");
+                    LogHelper.Log($"Scraped users are available to export in the dropdown below");
+                }
+                else
+                {
+                    LogHelper.Log($"{scrapeListResult.Count} users scraped");
+                }
+            }
+            catch (Exception ex) { }
 
             return scrapeListResult;
         }

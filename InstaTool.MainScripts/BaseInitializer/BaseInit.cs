@@ -2,6 +2,8 @@
 using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 
@@ -9,10 +11,12 @@ namespace InstaTool.MainScripts.BaseInitializer
 {
     public class BaseInit
     {
-        private readonly string _firefoxDriverPath = @"C:\Users\seantal\source\repos\yt\YoutubeManagement.MainScripts\driver";
+        private string _firefoxDriverPath = Path.Combine(projectFolder, @"driver").Replace("UIApp", "MainScripts");
+        private static string projectFolder = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName.Replace("bin", "");
 
         private FirefoxDriver _instaDriver = null;
         public FirefoxDriver InstaDriver { get => _instaDriver; set => _instaDriver = value; }
+        public List<FirefoxDriver> listOfFirefoxDrivers = null;
 
         public FirefoxDriver CreateAndOpenDriver()
         {
@@ -36,20 +40,6 @@ namespace InstaTool.MainScripts.BaseInitializer
             return coreCount;
         }
 
-
-        public List<FirefoxDriver> CreateDrivers()
-        {
-            var options = new FirefoxOptions();
-            options.AddArgument("-headless");
-            List<FirefoxDriver> listOfDrivers = new List<FirefoxDriver>();
-
-            for (int i = 0; i < GetNumberOfCores()-1; i++)
-            {
-                listOfDrivers.Add(CreateAndOpenDriver());
-            }
-
-            return listOfDrivers;
-        }
     }
 
 

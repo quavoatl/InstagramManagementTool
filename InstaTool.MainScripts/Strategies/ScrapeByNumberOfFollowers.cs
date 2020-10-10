@@ -30,9 +30,6 @@ namespace InstaTool.MainScripts.Strategies
 
             var resultsOfThisScraping = new List<ScrapedUser>();
 
-
-
-
             foreach (var url in userURLs)
             {
                 driver.Navigate().GoToUrl(url);

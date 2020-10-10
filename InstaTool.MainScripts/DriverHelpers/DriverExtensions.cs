@@ -4,6 +4,7 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 
 namespace InstaTool.MainScripts.DriverHelpers
@@ -28,6 +29,19 @@ namespace InstaTool.MainScripts.DriverHelpers
                 return wait.Until(drv => drv.FindElements(by));
             }
             return driver.FindElements(by);
+        }
+
+        public static void KillProcesses()
+        {
+            foreach (var process in Process.GetProcessesByName("geckodriver"))
+            {
+                process.Kill();
+            }
+
+            foreach (var process in Process.GetProcessesByName("firefox"))
+            {
+                process.Kill();
+            }
         }
     }
 }

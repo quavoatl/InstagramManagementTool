@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\YoutubeManagement.DataAccess\InstaTool.DataAccess.csproj" />
-    <ProjectReference Include="..\YoutubeManagement.MainScripts\InstaTool.MainScripts.csproj" />
+    <ProjectReference Include="..\InstaTool.DataAccess\InstaTool.DataAccess.csproj" />
+    <ProjectReference Include="..\InstaTool.MainScripts\InstaTool.MainScripts.csproj" />
   </ItemGroup>
 
 </Project>

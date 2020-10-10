@@ -63,7 +63,7 @@ namespace InstaTool.UIApp.ScrapeUsersForms
                 listOfLogsListview.Items.Add(lvi);
             }
         }
-
+        
         private async void startScraper_Click(object sender, EventArgs e)
         {
             backToFeatures.Enabled = false;
@@ -95,13 +95,9 @@ namespace InstaTool.UIApp.ScrapeUsersForms
                     var homepage = ig.PerformLogin(_accountInUse.EmailPhone);
                     ThreadHelperClass.SetText(this, statusLabel, "Logged in...");
                     var userProfile = homepage.GoToUserProfile(instagramTargetUrl.Text, true);
-                    ThreadHelperClass.SetText(this, statusLabel, "Started scraping...");
+                    ThreadHelperClass.SetText(this, statusLabel, "Started scraping...be patient");
                     _scrapedUsers = userProfile.ScrapeUsersByStrategy(1, new ScrapeByNumberOfFollowers(fSpecs));
-                    ThreadHelperClass.SetText(this, statusLabel, "Scraping done...");
-
-
-                    // (1) change this in future, let user decide no of scraped users desired
-
+                    ThreadHelperClass.SetText(this, statusLabel, "Scraping done!!");
                 }
             }
         }
